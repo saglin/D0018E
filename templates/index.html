@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 <body>
-	<h1>Välkommen</h1>
-	<ul>
-		{% for item in items %}
-			<li><a href="{{ url_for('item_page', id=item[0]) }}">{{item[1]}}</a></li>
-		{% endfor %}
-	</ul>
+    <header>
+        <a href="{{ url_for('index') }}" class="browse-btn">Browse</a>
+        <h1 class="title">Vinter</h1>
+        <a href="#" class="cart-btn">🛒 Cart</a>
+    </header>
+
+    <h1>Välkommen</h1>
+    <ul>
+        {% for item in items %}
+            <li><a href="{{ url_for('item_page', id=item[0]) }}">{{ item[1] }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

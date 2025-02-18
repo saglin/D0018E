@@ -57,7 +57,10 @@ def check_credentials():
         if data != None:
             print("Valid user", data)
             session['user_id'] = data[0]
-            return redirect(url_for('index'))
+            if data[8]: # Checks if the user is an admin
+                return redirect(url_for('admin'))
+            else:
+                return redirect(url_for('index'))
         else: 
             return redirect(url_for('login'))
 

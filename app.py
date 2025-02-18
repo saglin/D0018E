@@ -48,7 +48,7 @@ def check_credentials():
         username = request.form['username']
         password = request.form['password']
         cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.password=%s''', (username,password,))
+        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,password,))
         data = cursor.fetchone()
         cursor.close()
         if len(data) == 1:

@@ -40,7 +40,13 @@ def register():
 
 @app.route("/admin")
 def admin():
-    return render_template("admin.html")
+    cursor = mysql.connection.cursor()
+    cursor.execute('''SELECT * FROM Item''')
+    items = cursor.fetchall()
+    cursor.execute('''SELECT * FROM Order''')
+    orders = cursor.fetchall()
+    cursor.close()
+    return render_template("admin.html", items=items, orders=orders)
 
 
 # Check if the username and password are legitimate

@@ -54,7 +54,7 @@ def check_credentials():
         cursor.close()
         if len(data) != 0:
             print("Valid user", data)
-            session['user_id'] == data.id
+            session['user_id'] = data.id
             return index()
         else: 
             return login()

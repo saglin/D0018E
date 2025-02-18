@@ -1,6 +1,6 @@
 #!/bin/python3
 
-from flask import Flask, render_template, jsonify, request, session, url_for
+from flask import Flask, render_template, jsonify, request, session, url_for, redirect
 from flask_mysqldb import MySQL
 import random
 
@@ -57,8 +57,8 @@ def check_credentials():
         if len(data) != 0:
             print("Valid user", data)
             session['user_id'] = data[0]
-            return url_for('index')
+            return redirect(url_for('index'))
         else: 
-            return url_for('login')
+            return redirect(url_for('login'))
 
 app.run(host="0.0.0.0", port=80)

@@ -45,6 +45,7 @@ def admin():
 @app.route("/check_credentials", methods=['POST'])
 def check_credentials():
     if request.method == 'POST':
+        print("Checking credentials")
         username = request.form['username']
         password = request.form['password']
         cursor = mysql.connection.cursor()
@@ -52,6 +53,7 @@ def check_credentials():
         data = cursor.fetchone()
         cursor.close()
         if len(data) == 1:
+            print("Valid user", data)
             session['user_id'] == data.id
             return index()
         else: 

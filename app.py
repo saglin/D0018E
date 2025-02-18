@@ -6,6 +6,8 @@ import random
 
 app = Flask(__name__)
 
+app.secret_key = 'SECRET_KEY'
+
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''

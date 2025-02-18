@@ -28,7 +28,7 @@ def item_page(id):
     cursor.execute('''SELECT * FROM Item WHERE Item.id=%s''', (id,))
     data = cursor.fetchone()
     cursor.close()
-    return render_template("item.html", item=data[1], price=data[2], stock=data[3], description=data[4])
+    return render_template("item.html", id=data[0], item=data[1], price=data[2], stock=data[3], description=data[4])
 
 @app.route("/")
 def login():
@@ -47,7 +47,6 @@ def admin():
 @app.route("/check_credentials", methods=['POST'])
 def check_credentials():
     if request.method == 'POST':
-        print("Checking credentials")
         username = request.form['username']
         password = request.form['password']
         cursor = mysql.connection.cursor()
@@ -55,7 +54,6 @@ def check_credentials():
         data = cursor.fetchone()
         cursor.close()
         if data != None:
-            print("Valid user", data)
             session['user_id'] = data[0]
             if data[8]: # Checks if the user is an admin
                 return redirect(url_for('admin'))
@@ -63,5 +61,14 @@ def check_credentials():
                 return redirect(url_for('index'))
         else: 
             return redirect(url_for('login'))
+
+@app.route("/add_to_cart/<int:id>", methods=['POST'])
+def add_to_cart(id):
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor()
+        cursor.execute('''INSERT INTO Shopping_Cart (user_id, item_id, item_amount) VALUES (%i, %i, 1)''', (session['user_id'], id))
+        cursor.close()
+        return redirect(url_for('item_page', id=id))
+
 
 app.run(host="0.0.0.0", port=80)

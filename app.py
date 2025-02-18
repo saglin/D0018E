@@ -43,7 +43,7 @@ def admin():
     cursor = mysql.connection.cursor()
     cursor.execute('''SELECT * FROM Item''')
     items = cursor.fetchall()
-    cursor.execute('''SELECT * FROM Order''')
+    cursor.execute('''SELECT * FROM Orders''')
     orders = cursor.fetchall()
     cursor.close()
     return render_template("admin.html", items=items, orders=orders)

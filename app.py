@@ -66,7 +66,8 @@ def check_credentials():
 def add_to_cart(id):
     if request.method == 'POST':
         cursor = mysql.connection.cursor()
-        cursor.execute('''INSERT INTO Shopping_Cart (user_id, item_id, item_amount) VALUES (%i, %i, 1)''', (session['user_id'], id))
+        print("User id: ", session['user_id'])
+        cursor.execute('''INSERT INTO Shopping_Cart (user_id, item_id, item_amount) VALUES (%i, %i, 1)''', (session['user_id'], id,))
         cursor.close()
         return redirect(url_for('item_page', id=id))
 

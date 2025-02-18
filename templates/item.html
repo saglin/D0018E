@@ -6,7 +6,7 @@
     <p>Price: {{price}}</p>
     <p>Item Description: {{decsription}}</p>
 
-    <form method="POST" action="{{ url_for('add_to_cart', id) }}">        
+    <form method="POST" action="{{ url_for('add_to_cart', id=id) }}">        
         <button type="submit">Add to cart</button>
     </form>
 </body>

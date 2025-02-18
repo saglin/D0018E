@@ -26,7 +26,7 @@ CREATE TABLE `Shopping_Cart` (
   PRIMARY KEY (`user_id`, `item_id`)
 );
 
-CREATE TABLE `Order` (
+CREATE TABLE `Orders` (
   `id` integer PRIMARY KEY,
   `user_id` integer,
   `date_placed` date,
@@ -60,11 +60,11 @@ ALTER TABLE `Shopping_Cart` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`)
 
 ALTER TABLE `Shopping_Cart` ADD FOREIGN KEY (`item_id`) REFERENCES `Item` (`id`);
 
-ALTER TABLE `Order` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `Orders` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `Order_Items` ADD FOREIGN KEY (`item_id`) REFERENCES `Item` (`id`);
 
-ALTER TABLE `Order_Items` ADD FOREIGN KEY (`order_id`) REFERENCES `Order` (`id`);
+ALTER TABLE `Order_Items` ADD FOREIGN KEY (`order_id`) REFERENCES `Orders` (`id`);
 
 ALTER TABLE `Comment` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 

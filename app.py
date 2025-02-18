@@ -52,7 +52,7 @@ def check_credentials():
         cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,password,))
         data = cursor.fetchone()
         cursor.close()
-        if len(data) == 1:
+        if len(data) != 0:
             print("Valid user", data)
             session['user_id'] == data.id
             return index()

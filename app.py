@@ -28,20 +28,8 @@ def item_page(id):
     cursor.close()
     return render_template("item.html", item=data[1], price=data[2], stock=data[3], description=data[4])
 
-@app.route("/", methods=['POST'])
+@app.route("/")
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.password=%s''', (username,password,))
-        data = cursor.fetchone()
-        cursor.close()
-        if len(data) == 1:
-            session['user_id'] == data.id
-            return index()
-        else: 
-            return login()
     return render_template("login.html")
 
 @app.route("/register")
@@ -54,15 +42,19 @@ def admin():
 
 
 # Check if the username and password are legitimate
-@app.route("/check_credentials/<string:username>/<string:password>")
-def check_credentials(username, password):
-    cursor = mysql.connection.cursor()
-    cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.password=%s''', (username,password,))
-    data = cursor.fetchone()
-    cursor.close()
-    if len(data) == 1:
-        return index()
-    else:
-        return login()
+@app.route("/check_credentials", methods=['POST'])
+def check_credentials():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        cursor = mysql.connection.cursor()
+        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.password=%s''', (username,password,))
+        data = cursor.fetchone()
+        cursor.close()
+        if len(data) == 1:
+            session['user_id'] == data.id
+            return index()
+        else: 
+            return login()
 
 app.run(host="0.0.0.0", port=80)

@@ -11,7 +11,7 @@
     </header>
 
     <h1>Log In</h1>
-    <form method="post">
+    <form method="POST" action="{{ url_for('check_credentials') }}">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" reqiured><br><br>
 

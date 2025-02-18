@@ -54,7 +54,7 @@ def check_credentials():
         cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,password,))
         data = cursor.fetchone()
         cursor.close()
-        if len(data) != 0:
+        if data != None:
             print("Valid user", data)
             session['user_id'] = data[0]
             return redirect(url_for('index'))

@@ -94,7 +94,7 @@ def add_item():
         return redirect(url_for('admin'))
 
 @app.route("/change_stock/<int:id>", methods=['POST'])
-def add_item(id):
+def change_stock(id):
     if request.method == 'POST':
         stock = request.form['stock']
         cursor = mysql.connection.cursor()

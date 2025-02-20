@@ -56,7 +56,7 @@ def check_credentials():
         username = request.form['username']
         password = request.form['password']
         cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM User WHERE User.username='%s' and User.encrypted_password='%s' ''', (username,password,))
+        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,password,))
         data = cursor.fetchone()
         cursor.close()
         if data != None:
@@ -88,7 +88,7 @@ def add_item():
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT * FROM Item''')
         id = len(cursor.fetchall())
-        cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, '%s', %s, %s, '%s', '%s')''', (id, item_name, price, stock, item_description, item_image,))
+        cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
         data = cursor.fetchone()
         cursor.close()
         return redirect(url_for('admin'))

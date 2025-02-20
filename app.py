@@ -86,11 +86,15 @@ def add_new_item():
     if request.method == 'POST':
         print("starting")
         item_name = request.form['item_name']
+        print("item loaded: ", item_name)
         price = request.form['price']
+        print("price loaded: ", price)
         stock = request.form['stock']
+        print("stock loaded: ", stock)
         item_description = request.form['item_description']
+        print("description loaded: ", item_description)
         item_image = request.form['item_image']
-        print("parameters loaded")
+        print("image loaded: ", item_image)
         cursor = mysql.connection.cursor()
         print("querying")
         cursor.execute('''SELECT * FROM Item''')

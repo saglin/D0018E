@@ -120,7 +120,7 @@ def change_item_amount(item_id):
         new_item_amount = request.form['new_item_amount']
         user_id = session['user_id']
         cursor = mysql.connection.cursor()
-        if new_item_amount > 0:
+        if int(new_item_amount) > 0:
             cursor.execute('''UPDATE Shopping_Cart SET Shopping_Cart.item_amount=%s WHERE Shopping_Cart.user_id=%s AND Shopping_Cart.item_id=%s''', (new_item_amount, user_id, item_id, ))
         else:
             cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Shopping_Cart.item_id=%s''', (user_id, item_id, ))

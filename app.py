@@ -84,25 +84,15 @@ def add_to_cart(id):
 @app.route("/add_new_item", methods=['POST'])
 def add_new_item():
     if request.method == 'POST':
-        print("starting")
         item_name = request.form['item_name']
-        print("item loaded: ", item_name)
         price = request.form['price']
-        print("price loaded: ", price)
         stock = request.form['stock']
-        print("stock loaded: ", stock)
         item_description = request.form['item_description']
-        print("description loaded: ", item_description)
         item_image = request.form['item_image']
-        print("image loaded: ", item_image)
         cursor = mysql.connection.cursor()
-        print("querying")
         cursor.execute('''SELECT * FROM Item''')
-        print("query done")
         id = len(cursor.fetchall())
-        print(id)
         cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
-        print("inserted")
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('admin'))

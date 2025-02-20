@@ -40,7 +40,7 @@
         {% endfor %}
     </table>
     <h3>Add new item</h3>
-    <form method="POST" action="{{ url_for('add_item') }}">
+    <form method="POST" action="{{ url_for('add_new_item') }}">
         <label for="item_name">Item name:</label>
         <input type="text" id="item_name" name="item_name" reqiured><br><br>
 

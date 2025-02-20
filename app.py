@@ -81,8 +81,8 @@ def add_to_cart(id):
         return redirect(url_for('item_page', id=id))
 
 
-@app.route("/add_item", methods=['POST'])
-def add_item():
+@app.route("/add_new_item", methods=['POST'])
+def add_new_item():
     if request.method == 'POST':
         item_name = request.form['item_name']
         price = request.form['price']

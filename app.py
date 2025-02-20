@@ -71,11 +71,15 @@ def check_credentials():
 @app.route("/add_to_cart/<int:id>", methods=['POST'])
 def add_to_cart(id):
     if request.method == 'POST':
-        cursor = mysql.connection.cursor()
-        cursor.execute('''INSERT INTO Shopping_Cart (user_id, item_id, item_amount) VALUES (%s, %s, 1)''', (session['user_id'], id,))
-        mysql.connection.commit()
-        cursor.close()
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute('''INSERT INTO Shopping_Cart (user_id, item_id, item_amount) VALUES (%s, %s, 1)''', (session['user_id'], id,))
+            mysql.connection.commit()
+            cursor.close()
+        except:
+            pass
         return redirect(url_for('item_page', id=id))
+
 
 @app.route("/add_item", methods=['POST'])
 def add_item():

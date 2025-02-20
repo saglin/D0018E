@@ -111,7 +111,7 @@ def shopping_cart():
     return render_template("shopping_cart.html", data=data)
 
 @app.route("/change_item_amount/<int:id>", methods=['POST'])
-def add_item(item_id):
+def change_item_amount(item_id):
     if request.method == 'POST':
         new_item_amount = request.form['new_item_amount']
         user_id = session['user_id']

@@ -98,7 +98,6 @@ def add_item(id):
     if request.method == 'POST':
         stock = request.form['stock']
         cursor = mysql.connection.cursor()
-        id = len(cursor.fetchall())
         cursor.execute('''UPDATE Item SET Item.stock = %s WHERE Item.id = %s''', (stock, id,))
         cursor.close()
         return redirect(url_for('admin'))

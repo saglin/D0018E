@@ -77,5 +77,30 @@ def add_to_cart(id):
         cursor.close()
         return redirect(url_for('item_page', id=id))
 
+@app.route("/add_item", methods=['POST'])
+def add_item():
+    if request.method == 'POST':
+        item_name = request.form['item_name']
+        price = request.form['price']
+        stock = request.form['stock']
+        item_description = request.form['item_description']
+        item_image = request.form['item_image']
+        cursor = mysql.connection.cursor()
+        cursor.execute('''SELECT * FROM Item''')
+        id = len(cursor.fetchall())
+        cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
+        data = cursor.fetchone()
+        cursor.close()
+        return redirect(url_for('admin'))
+
+@app.route("/change_stock/<int:id>", methods=['POST'])
+def add_item(id):
+    if request.method == 'POST':
+        stock = request.form['stock']
+        cursor = mysql.connection.cursor()
+        id = len(cursor.fetchall())
+        cursor.execute('''UPDATE Item SET Item.stock = '%s' WHERE Item.id = %s''', (stock, id,))
+        cursor.close()
+        return redirect(url_for('admin'))
 
 app.run(host="0.0.0.0", port=80)

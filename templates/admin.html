@@ -26,9 +26,36 @@
                 <td>{{ item[1] }}</td>
                 <td>{{ item[2] }}</td>
                 <td>{{ item[3] }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('change_stock', id=item[0]) }}">
+                        <label for="stock">New stock:</label>
+                        <input type="text" id="stock" name="stock" reqiured><br><br>
+                        
+                        <button type="submit">Change stock</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>
+    <h3>Add new item</h3>
+    <form method="POST" action="{{ url_for('add_item') }}">
+        <label for="item_name">Item name:</label>
+        <input type="text" id="item_name" name="item_name" reqiured><br><br>
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" reqiured><br><br>
+
+        <label for="stock">Stock:</label>
+        <input type="text" id="stock" name="stock" reqiured><br><br>
+
+        <label for="item_decription">Item description:</label>
+        <input type="text" id="item_decription" name="item_decription" reqiured><br><br>
+
+        <label for="item_image">Item image:</label>
+        <input type="text" id="item_image" name="item_image" reqiured><br><br>
+        
+        <button type="submit">Add item</button>
+    </form>
             
 
 </body>

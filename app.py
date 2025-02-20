@@ -113,7 +113,7 @@ def shopping_cart():
     data = cursor.fetchall()
     return render_template("shopping_cart.html", data=data)
 
-@app.route("/change_item_amount/<int:id>", methods=['POST'])
+@app.route("/change_item_amount/<int:item_id>", methods=['POST'])
 def change_item_amount(item_id):
     if request.method == 'POST':
         new_item_amount = request.form['new_item_amount']

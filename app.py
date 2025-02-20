@@ -102,7 +102,8 @@ def change_stock(id):
     if request.method == 'POST':
         stock = request.form['stock']
         cursor = mysql.connection.cursor()
-        cursor.execute('''UPDATE Item SET Item.stock = %s WHERE Item.id = %s''', (stock, id,))
+        cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, id,))
+        print('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, id,))
         cursor.close()
         return redirect(url_for('admin'))
     

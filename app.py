@@ -91,7 +91,7 @@ def add_new_item():
         item_image = request.form['item_image']
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT * FROM Item''')
-        id = len(cursor.fetchall() + 1)
+        id = len(cursor.fetchall()) + 1
         cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
         mysql.connection.commit()
         cursor.close()

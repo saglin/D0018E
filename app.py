@@ -93,7 +93,7 @@ def add_item():
         cursor.execute('''SELECT * FROM Item''')
         id = len(cursor.fetchall())
         cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
-        data = cursor.fetchone()
+        mysql.connection.commit()
         cursor.close()
         return redirect(url_for('admin'))
 
@@ -103,7 +103,7 @@ def change_stock(id):
         stock = request.form['stock']
         cursor = mysql.connection.cursor()
         cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, id,))
-        print('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, id,))
+        mysql.connection.commit()
         cursor.close()
         return redirect(url_for('admin'))
     
@@ -121,6 +121,7 @@ def change_item_amount(item_id):
         user_id = session['user_id']
         cursor = mysql.connection.cursor()
         cursor.execute('''UPDATE Shopping_Cart SET Shopping_Cart.item_amount=%s WHERE Shopping_Cart.user_id=%s AND Shopping_Cart.item_id=%s''', (new_item_amount, user_id, item_id, ))
+        mysql.connection.commit()
         cursor.close()
         return redirect(url_for('shopping_cart'))
     
@@ -129,6 +130,7 @@ def send_order(id):
     if request.method == 'POST':
         cursor = mysql.connection.cursor()
         cursor.execute('''UPDATE Orders SET Orders.sent=1''')
+        mysql.connection.commit()
         cursor.close()
         return redirect(url_for('admin'))
 

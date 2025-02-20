@@ -91,6 +91,7 @@ def add_new_item():
         item_description = request.form['item_description']
         item_image = request.form['item_image']
         cursor = mysql.connection.cursor()
+        print("querying")
         cursor.execute('''SELECT * FROM Item''')
         id = len(cursor.fetchall())
         print(id)

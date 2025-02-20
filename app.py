@@ -56,7 +56,7 @@ def check_credentials():
         username = request.form['username']
         password = request.form['password']
         cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,password,))
+        cursor.execute('''SELECT * FROM User WHERE User.username='%s' and User.encrypted_password='%s' ''', (username,password,))
         data = cursor.fetchone()
         cursor.close()
         if data != None:
@@ -88,7 +88,7 @@ def add_item():
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT * FROM Item''')
         id = len(cursor.fetchall())
-        cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
+        cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, '%s', %s, %s, '%s', '%s')''', (id, item_name, price, stock, item_description, item_image,))
         data = cursor.fetchone()
         cursor.close()
         return redirect(url_for('admin'))
@@ -99,8 +99,34 @@ def add_item(id):
         stock = request.form['stock']
         cursor = mysql.connection.cursor()
         id = len(cursor.fetchall())
-        cursor.execute('''UPDATE Item SET Item.stock = '%s' WHERE Item.id = %s''', (stock, id,))
+        cursor.execute('''UPDATE Item SET Item.stock = %s WHERE Item.id = %s''', (stock, id,))
         cursor.close()
         return redirect(url_for('admin'))
+    
+@app.route("/shopping_cart")
+def shopping_cart():
+    cursor = mysql.connection.cursor()
+    cursor.execute('''SELECT Item.id, Item.item_name, Item.price, Shopping_Cart.item_amount FROM Item, Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Item.id=Shopping_Cart.item_id''', (session['user_id'],))
+    data = cursor.fetchall()
+    return render_template("shopping_cart.html", data=data)
+
+@app.route("/change_item_amount/<int:id>", methods=['POST'])
+def add_item(item_id):
+    if request.method == 'POST':
+        new_item_amount = request.form['new_item_amount']
+        user_id = session['user_id']
+        cursor = mysql.connection.cursor()
+        cursor.execute('''UPDATE Shopping_Cart SET Shopping_Cart.item_amount=%s WHERE Shopping_Cart.user_id=%s AND Shopping_Cart.item_id=%s''', (new_item_amount, user_id, item_id, ))
+        cursor.close()
+        return redirect(url_for('shopping_cart'))
+    
+@app.route("/send_order/<int:id>", methods=['POST'])
+def send_order(id):
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor()
+        cursor.execute('''UPDATE Orders SET Orders.sent=1''')
+        cursor.close()
+        return redirect(url_for('admin'))
+
 
 app.run(host="0.0.0.0", port=80)

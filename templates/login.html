@@ -4,11 +4,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <header>
-        <a href="{{ url_for('index') }}" class="browse-btn">Browse</a>
-        <h1 class="title">Vinter</h1>
-        <a href="#" class="cart-btn">🛒 Cart</a>
-    </header>
 
     <h1>Log In</h1>
     <form method="POST" action="{{ url_for('check_credentials') }}">

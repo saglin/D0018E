@@ -53,17 +53,7 @@ h3 {
     color: #333;
 }
 
-ul {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-table {
+table, ul {
     width: 80%;
     margin: 20px auto;
     border-collapse: collapse;
@@ -73,17 +63,17 @@ table {
     overflow: hidden;
 }
 
-th, td {
+th, td, li {
     padding: 12px 16px;
     text-align: center;
 }
 
-th {
+th, li {
     background-color: #495057;
     color: white;
 }
 
-tr:nth-child(even) {
+tr:nth-child(even), ul:nth-child() {
     background-color: #f2f2f2;
 }
 

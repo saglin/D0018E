@@ -41,6 +41,18 @@ h1 {
     color: #333;
 }
 
+h2 {
+    text-align: center;
+    margin-top: 16px;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 14px;
+    color: #333;
+}
+
 table {
     width: 80%;
     margin: 20px auto;

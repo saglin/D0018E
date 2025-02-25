@@ -53,6 +53,16 @@ h3 {
     color: #333;
 }
 
+ul {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
 table {
     width: 80%;
     margin: 20px auto;

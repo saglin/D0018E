@@ -63,7 +63,23 @@ table, ul {
     overflow: hidden;
 }
 
-th, td, li {
+li {
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.link-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+  
+.link-container a {
+    text-decoration: none;
+    /* Any other styling for your links */
+}
+
+th, td {
     padding: 12px 16px;
     text-align: center;
 }

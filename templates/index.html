@@ -13,7 +13,12 @@
     <h1>Välkommen</h1>
     <ul>
         {% for item in items %}
-            <li><a href="{{ url_for('item_page', id=item[0]) }}">{{ item[1] }}</a></li>
+            <div class="item_container">
+                <li>
+                    <a href="{{ url_for('item_page', id=item[0]) }}">{{ item[1] }}</a>
+                    <a href="{{ url_for('item_page', id=item[0]) }}">{{ item[2] }}</a>
+                </li>
+            </div>
         {% endfor %}
     </ul>
 </body>

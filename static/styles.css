@@ -68,7 +68,7 @@ th, td, li {
     text-align: center;
 }
 
-th, li {
+th {
     background-color: #495057;
     color: white;
 }

@@ -143,18 +143,21 @@ def place_order():
         user_id = session['user_id']
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT Item.id, Item.price, Shopping_Cart.item_amount FROM Item, Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Item.id=Shopping_Cart.item_id''', (session['user_id'],))
-        cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
-        cursor.execute('''SELECT * FROM Orders''')
         data = cursor.fetchall()
         item_id = data[0]
         item_price = data[1]
         item_amount = data[2]
-        order_id = len(cursor.fetchall()) + 1
-        date_placed = str(date.today())
-        cursor.execute('''INSERT INTO Orders (id, user_id, date_placed, sent) VALUES (%s, %s, %s, 0)''', (order_id, user_id, date_placed,))
-        for i in range(len(item_id)):
-            cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id[i], order_id, item_amount[i], item_price[i],))
-        mysql.connection.commit()
+        if len(data) > 0:
+            cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
+            cursor.execute('''SELECT * FROM Orders''')
+            order_id = len(cursor.fetchall()) + 1
+            date_placed = str(date.today())
+            cursor.execute('''INSERT INTO Orders (id, user_id, date_placed, sent) VALUES (%s, %s, %s, 0)''', (order_id, user_id, date_placed,))
+            for i in range(len(item_id)):
+                cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id[i], order_id, item_amount[i], item_price[i],))
+            mysql.connection.commit()
+        cursor.close()
+        return redirect(url_for('shopping_cart'))
 
 
 app.run(host="0.0.0.0", port=80)

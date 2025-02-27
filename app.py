@@ -177,7 +177,7 @@ def leave_comment(id):
         cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text) VALUES (%s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment))
         mysql.connection.commit()
         cursor.close()
-        return redirect(url_for('item', id))
+        return redirect(url_for('item_page', id=id))
     
 @app.route("/leave_rating/<int:id>", methods=['POST'])
 def leave_rating(id):

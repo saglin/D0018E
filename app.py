@@ -127,8 +127,8 @@ def change_item_amount(item_id):
         user_id = session['user_id']
         cursor = mysql.connection.cursor()
         if int(new_item_amount) > 0:
-            cursor.execute('''SELECT Item.stock FROM Item WHERE Item.id=%s''', (item_id))
-            stock = cursor.fetchone()
+            cursor.execute('''SELECT Item.stock FROM Item WHERE Item.id=%s''', (item_id,))
+            stock = cursor.fetchone()[0]
             if stock < new_item_amount:
                 cursor.close()
                 return redirect(url_for('shopping_cart'))

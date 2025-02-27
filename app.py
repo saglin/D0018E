@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, jsonify, request, session, url_for, redirect
 from flask_mysqldb import MySQL
-import random
+from datetime import date
 
 app = Flask(__name__)
 
@@ -136,6 +136,21 @@ def send_order(id):
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('admin'))
+    
+@app.place_order("/place_order", methods=['POST'])
+def place_order():
+    if request.method == 'POST':
+        user_id = session['user_id']
+        cursor = mysql.connection.cursor()
+        cursor.execute('''SELECT Item.id, Item.price, Shopping_Cart.item_amount FROM Item, Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Item.id=Shopping_Cart.item_id''', (session['user_id'],))
+        [item_id, item_price, item_amount] = cursor.fetchall()
+        cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
+        cursor.execute('''SELECT * FROM Orders''')
+        order_id = len(cursor.fetchall()) + 1
+        date_placed = str(date.today())
+        cursor.execute('''INSERT INTO Orders (id, user_id, date_placed, sent) VALUES (%s, %s, %s, 0)''', (order_id, user_id, date_placed,))
+        cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id, order_id, item_amount, item_price,))
+        mysql.connection.commit()
 
 
 app.run(host="0.0.0.0", port=80)

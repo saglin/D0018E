@@ -35,5 +35,8 @@
             </tr>
         {% endfor %}
     </table>
+    <form method="POST" action="{{ url_for('place_order') }}">        
+        <button type="submit">Place Order</button>
+    </form>
 </body>
 </html>

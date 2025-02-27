@@ -18,5 +18,43 @@
     <form method="POST" action="{{ url_for('add_to_cart', id=id) }}">        
         <button type="submit">Add to cart</button>
     </form>
+
+    <p>Rating: {{ average_rating }}</p>
+
+    {% for comment in comments %}
+        <div class="item_container">
+            <li>
+                <p>{{ comment[0] }} {{ comment[1] }}</p>
+                <p>{{ comment[2] }}</p>
+            </li>
+        </div>
+    {% endfor %}
+
+    <form method="POST" action="{{ url_for('leave_rating', id=id) }}">    
+        <input type="radio" id="1" name="rating" value="1" checked />
+        <label for="1">1</label>
+
+        <input type="radio" id="2" name="rating" value="2" checked />
+        <label for="2">2</label>
+
+        <input type="radio" id="3" name="rating" value="3" checked />
+        <label for="3">3</label>
+
+        <input type="radio" id="4" name="rating" value="4" checked />
+        <label for="4">4</label>
+
+        <input type="radio" id="5" name="rating" value="5" checked />
+        <label for="5">5</label>
+
+        <button type="submit">Leave Rating</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('leave_comment', id=id) }}">    
+        <label for="new_comment">Item name:</label>
+        <input type="text" id="new_comment" name="new_comment" reqiured><br><br>
+
+        <button type="submit">Leave Comment</button>
+    </form>
+
 </body>
 </html>

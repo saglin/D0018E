@@ -3,6 +3,7 @@
 from flask import Flask, render_template, jsonify, request, session, url_for, redirect
 from flask_mysqldb import MySQL
 from datetime import date
+import numpy
 
 app = Flask(__name__)
 
@@ -26,9 +27,14 @@ def index():
 def item_page(id):
     cursor = mysql.connection.cursor()
     cursor.execute('''SELECT * FROM Item WHERE Item.id=%s''', (id,))
-    data = cursor.fetchone()
+    item_data = cursor.fetchone()
+    cursor.execute('''SELECT User.username, Comment.time_posted, Comment.comment_text FROM Comment, User WHERE Comment.item_id=%s AND User.id=Comment.user_id''', (id,))
+    comment_data = cursor.fetchall()
+    cursor.execute('''SELECT Rating.star_rating FROM Rating WHERE Rating.item_id=%s''', (id,))
+    rating_data = cursor.fetchall()
+    average_rating = numpy.mean(rating_data)
     cursor.close()
-    return render_template("item.html", id=data[0], item=data[1], price=data[2], stock=data[3], description=data[4])
+    return render_template("item.html", id=item_data[0], item=item_data[1], price=item_data[2], stock=item_data[3], description=item_data[4], comments=comment_data, average_rating=average_rating)
 
 @app.route("/")
 def login():
@@ -158,6 +164,31 @@ def place_order():
             mysql.connection.commit()
         cursor.close()
         return redirect(url_for('shopping_cart'))
-
+    
+@app.route("/leave_comment/<int:id>", methods=['POST'])
+def leave_comment(id):
+    if request.method == 'POST':
+        user_id = session['user_id']
+        new_comment = request.form['new_comment']
+        cursor = mysql.connection.cursor()
+        cursor.execute('''SELECT * FROM Comment''')
+        comment_id = len(cursor.fetchall()) + 1
+        time_posted = str(date.today())
+        cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text) VALUES (%s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment))
+        mysql.connection.commit()
+        cursor.close()
+        return redirect(url_for('item', id))
+    
+@app.route("/leave_rating/<int:id>", methods=['POST'])
+def leave_rating(id):
+    if request.method == 'POST':
+        user_id = session['user_id']
+        new_rating = session['rating']
+        cursor = mysql.connection.cursor()
+        cursor.execute('''DELETE FROM Rating WHERE Rating.user_id=%s AND Rating.item_id=%s''', (user_id, id,))
+        cursor.execute('''INSERT INTO Rating (user_id, item_id, star_rating) VALUES (%s, %s, %s)''', (user_id, id, new_rating))
+        mysql.connection.commit()
+        cursor.close()
+        return redirect(url_for('item', id))
 
 app.run(host="0.0.0.0", port=80)

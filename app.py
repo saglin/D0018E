@@ -129,7 +129,7 @@ def change_item_amount(item_id):
         if int(new_item_amount) > 0:
             cursor.execute('''SELECT Item.stock FROM Item WHERE Item.id=%s''', (item_id,))
             stock = cursor.fetchone()[0]
-            if stock < new_item_amount:
+            if stock < int(new_item_amount):
                 cursor.close()
                 return redirect(url_for('shopping_cart'))
             cursor.execute('''UPDATE Shopping_Cart SET Shopping_Cart.item_amount=%s WHERE Shopping_Cart.user_id=%s AND Shopping_Cart.item_id=%s''', (new_item_amount, user_id, item_id, ))

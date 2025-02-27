@@ -154,7 +154,7 @@ def place_order():
                 item_id = data[i][0]
                 item_price = data[i][1]
                 item_amount = data[i][2]
-                cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id[i], order_id, item_amount[i], item_price[i],))
+                cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id, order_id, item_amount, item_price,))
             mysql.connection.commit()
         cursor.close()
         return redirect(url_for('shopping_cart'))

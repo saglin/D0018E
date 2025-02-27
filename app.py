@@ -183,7 +183,7 @@ def leave_comment(id):
 def leave_rating(id):
     if request.method == 'POST':
         user_id = session['user_id']
-        new_rating = session['rating']
+        new_rating = request.form['rating']
         cursor = mysql.connection.cursor()
         cursor.execute('''DELETE FROM Rating WHERE Rating.user_id=%s AND Rating.item_id=%s''', (user_id, id,))
         cursor.execute('''INSERT INTO Rating (user_id, item_id, star_rating) VALUES (%s, %s, %s)''', (user_id, id, new_rating))

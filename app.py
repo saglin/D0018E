@@ -144,6 +144,7 @@ def place_order():
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT Item.id, Item.price, Shopping_Cart.item_amount FROM Item, Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Item.id=Shopping_Cart.item_id''', (session['user_id'],))
         data = cursor.fetchall()
+        print(data)
         item_id = data[0]
         item_price = data[1]
         item_amount = data[2]

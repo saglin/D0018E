@@ -127,6 +127,11 @@ def change_item_amount(item_id):
         user_id = session['user_id']
         cursor = mysql.connection.cursor()
         if int(new_item_amount) > 0:
+            cursor.execute('''SELECT Item.stock FROM Item WHERE Item.id=%s''', (item_id))
+            stock = cursor.fetchone()[0]
+            if stock < new_item_amount:
+                cursor.close()
+                return redirect(url_for('shopping_cart'))
             cursor.execute('''UPDATE Shopping_Cart SET Shopping_Cart.item_amount=%s WHERE Shopping_Cart.user_id=%s AND Shopping_Cart.item_id=%s''', (new_item_amount, user_id, item_id, ))
         else:
             cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Shopping_Cart.item_id=%s''', (user_id, item_id, ))
@@ -151,7 +156,6 @@ def place_order():
         cursor.execute('''SELECT Item.id, Item.price, Shopping_Cart.item_amount FROM Item, Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Item.id=Shopping_Cart.item_id''', (session['user_id'],))
         data = cursor.fetchall()
         if len(data) > 0:
-            cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
             cursor.execute('''SELECT * FROM Orders''')
             order_id = len(cursor.fetchall()) + 1
             date_placed = str(date.today())
@@ -161,6 +165,13 @@ def place_order():
                 item_price = data[i][1]
                 item_amount = data[i][2]
                 cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id, order_id, item_amount, item_price,))
+                cursor.execute('''SELECT Item.stock FROM Item WHERE Item.id=%s''', (item_id))
+                stock = cursor.fetchone()[0]
+                if stock < item_amount:
+                    cursor.close()
+                    return redirect(url_for('shopping_cart'))
+                cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock-item_amount, item_id))
+            cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
             mysql.connection.commit()
         cursor.close()
         return redirect(url_for('shopping_cart'))
@@ -202,18 +213,18 @@ def register_user():
         phone_number = request.form['phone_number']
         adress = request.form['adress']
 
+        cursor.execute('''SELECT * FROM User WHERE User.email=%s''', (email,))
+        data = cursor.fetchall()
+        if len(data) != 0: # Already a registered user with this email
+            cursor.close()
+            return redirect(url_for('login')) 
+
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT * FROM User WHERE User.username=%s''', (username,))
         data = cursor.fetchall()
         if len(data) != 0: # Some other user already has this username
             cursor.close()
             return redirect(url_for('register'))
-        
-        cursor.execute('''SELECT * FROM User WHERE User.email=%s''', (email,))
-        data = cursor.fetchall()
-        if len(data) != 0: # Already a registered user with this email
-            cursor.close()
-            return redirect(url_for('login')) 
 
         cursor.execute('''SELECT * FROM User''')
         user_id = len(cursor.fetchall()) + 1

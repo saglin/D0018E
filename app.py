@@ -189,6 +189,6 @@ def leave_rating(id):
         cursor.execute('''INSERT INTO Rating (user_id, item_id, star_rating) VALUES (%s, %s, %s)''', (user_id, id, new_rating))
         mysql.connection.commit()
         cursor.close()
-        return redirect(url_for('item', id))
+        return redirect(url_for('item_page', id=id))
 
 app.run(host="0.0.0.0", port=80)

@@ -190,5 +190,26 @@ def leave_rating(id):
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('item_page', id=id))
+    
+@app.route("/register_user", methods=['POST'])
+def register_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        encrypted_password = request.form['password']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        email = request.form['email']
+        phone_number = request.form['phone_number']
+        adress = request.form['adress']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute('''SELECT * FROM User''')
+        user_id = len(cursor.fetchall()) + 1
+        cursor.execute('''INSERT INTO User (id, username, encrypted_password, firstname, lastname, email, phone_number, adress, is_admin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 0)''', (user_id, username, encrypted_password, firstname, lastname, email, phone_number, adress,))
+        mysql.connection.commit()
+        cursor.close()
+
+        session['user_id'] = user_id
+        return redirect(url_for('browse'))
 
 app.run(host="0.0.0.0", port=80)

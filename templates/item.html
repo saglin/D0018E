@@ -22,10 +22,8 @@
     <p>Rating: {{ average_rating }}</p>
 
     {% for comment in comments %}
-        <div class="item_container">
-            <p>{{ comment[0] }} {{ comment[1] }}</p>
-            <p>{{ comment[2] }}</p>
-        </div>
+        <p>{{ comment[0] }} {{ comment[1] }}</p>
+        <p>{{ comment[2] }}</p>
     {% endfor %}
 
     <form method="POST" action="{{ url_for('leave_rating', id=id) }}">  

@@ -137,7 +137,7 @@ def send_order(id):
         cursor.close()
         return redirect(url_for('admin'))
     
-@app.place_order("/place_order", methods=['POST'])
+@app.route("/place_order", methods=['POST'])
 def place_order():
     if request.method == 'POST':
         user_id = session['user_id']

@@ -144,17 +144,16 @@ def place_order():
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT Item.id, Item.price, Shopping_Cart.item_amount FROM Item, Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Item.id=Shopping_Cart.item_id''', (session['user_id'],))
         data = cursor.fetchall()
-        print(data)
-        item_id = data[0]
-        item_price = data[1]
-        item_amount = data[2]
         if len(data) > 0:
             cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
             cursor.execute('''SELECT * FROM Orders''')
             order_id = len(cursor.fetchall()) + 1
             date_placed = str(date.today())
             cursor.execute('''INSERT INTO Orders (id, user_id, date_placed, sent) VALUES (%s, %s, %s, 0)''', (order_id, user_id, date_placed,))
-            for i in range(len(item_id)):
+            for i in range(len(data)):
+                item_id = data[i][0]
+                item_price = data[i][1]
+                item_amount = data[i][2]
                 cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id[i], order_id, item_amount[i], item_price[i],))
             mysql.connection.commit()
         cursor.close()

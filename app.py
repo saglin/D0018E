@@ -62,7 +62,7 @@ def check_credentials():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
+        hashed_password = generate_password_hash(password, method="pbkdf2:sha1")
         print("\nhashed pasword:", hashed_password)
         cursor = mysql.connection.cursor()
         cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,hashed_password,))
@@ -210,7 +210,7 @@ def register_user():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
+        hashed_password = generate_password_hash(password, method="pbkdf2:sha1")
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         email = request.form['email']

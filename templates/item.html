@@ -12,7 +12,7 @@
 
 	<h1>{{item}}</h1>
     <div class="item_info">
-        <p class="price_tag">Price: {{price}}:-</p>
+        <p class="price_tag">{{price}}:-</p>
         <p>Item Description: {{description}}</p>
         <p>Stock: {{stock}}</p>
         <form method="POST" action="{{ url_for('add_to_cart', id=id) }}">        
@@ -21,8 +21,9 @@
     </div>
 
     
-
-    <p>Rating: {{ average_rating }}</p>
+    <div class="rating_box">
+        <p class>Rating: {{ average_rating }} ⭐</p>
+    </div>
 
     <form method="POST" action="{{ url_for('leave_rating', id=id) }}">  
         <p>

@@ -67,6 +67,7 @@ def check_credentials():
         data = cursor.fetchone()
         cursor.close()
         if data != None and check_password_hash(data[2], password):
+            print("Password:", password, "Hashed password:", data[2])
             session['user_id'] = data[0]
             if data[8]: # Checks if the user is an admin
                 return redirect(url_for('admin'))

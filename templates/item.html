@@ -50,8 +50,10 @@
     </form>
 
     {% for comment in comments %}
-    <p>{{ comment[0] }} {{ comment[1] }}</p>
-    <p>{{ comment[2] }}</p>
+    <div class="comment">
+        <p>{{ comment[0] }} {{ comment[1] }}</p>
+        <p>{{ comment[2] }}</p>
+    </div>
     {% endfor %}
 
 

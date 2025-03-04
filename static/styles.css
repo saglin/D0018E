@@ -168,3 +168,8 @@ button:hover {
 .price_tag {
     font-size: 48px;
 }
+
+.register_link {
+    margin: 20px auto;
+    text-align: center;
+}

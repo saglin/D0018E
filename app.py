@@ -1,6 +1,7 @@
 #!/bin/python3
 
 from flask import Flask, render_template, jsonify, request, session, url_for, redirect
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mysqldb import MySQL
 from datetime import date
 import numpy
@@ -61,8 +62,9 @@ def check_credentials():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        hashed_password = generate_password_hash(password)
         cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,password,))
+        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,hashed_password,))
         data = cursor.fetchone()
         cursor.close()
         if data != None:
@@ -206,7 +208,8 @@ def leave_rating(id):
 def register_user():
     if request.method == 'POST':
         username = request.form['username']
-        encrypted_password = request.form['password']
+        password = request.form['password']
+        hashed_password = generate_password_hash(password)
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         email = request.form['email']
@@ -228,7 +231,7 @@ def register_user():
 
         cursor.execute('''SELECT * FROM User''')
         user_id = len(cursor.fetchall()) + 1
-        cursor.execute('''INSERT INTO User (id, username, encrypted_password, firstname, lastname, email, phone_number, adress, is_admin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 0)''', (user_id, username, encrypted_password, firstname, lastname, email, phone_number, adress,))
+        cursor.execute('''INSERT INTO User (id, username, encrypted_password, firstname, lastname, email, phone_number, adress, is_admin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 0)''', (user_id, username, hashed_password, firstname, lastname, email, phone_number, adress,))
         mysql.connection.commit()
         cursor.close()
 

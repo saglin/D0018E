@@ -213,13 +213,13 @@ def register_user():
         phone_number = request.form['phone_number']
         adress = request.form['adress']
 
+        cursor = mysql.connection.cursor()
         cursor.execute('''SELECT * FROM User WHERE User.email=%s''', (email,))
         data = cursor.fetchall()
         if len(data) != 0: # Already a registered user with this email
             cursor.close()
             return redirect(url_for('login')) 
-
-        cursor = mysql.connection.cursor()
+        
         cursor.execute('''SELECT * FROM User WHERE User.username=%s''', (username,))
         data = cursor.fetchall()
         if len(data) != 0: # Some other user already has this username

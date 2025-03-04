@@ -165,12 +165,12 @@ def place_order():
                 item_price = data[i][1]
                 item_amount = data[i][2]
                 cursor.execute('''INSERT INTO Order_Items (item_id, order_id, item_amount, price) VALUES (%s, %s, %s, %s)''', (item_id, order_id, item_amount, item_price,))
-                cursor.execute('''SELECT Item.stock FROM Item WHERE Item.id=%s''', (item_id))
+                cursor.execute('''SELECT Item.stock FROM Item WHERE Item.id=%s''', (item_id, ))
                 stock = cursor.fetchone()[0]
                 if stock < item_amount:
                     cursor.close()
                     return redirect(url_for('shopping_cart'))
-                cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock-item_amount, item_id))
+                cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, item_amount, item_id, ))
             cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
             mysql.connection.commit()
         cursor.close()

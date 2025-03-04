@@ -62,13 +62,11 @@ def check_credentials():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        hashed_password = generate_password_hash(password, method="pbkdf2:sha1")
-        print("\nhashed pasword:", hashed_password)
         cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM User WHERE User.username=%s and User.encrypted_password=%s''', (username,hashed_password,))
+        cursor.execute('''SELECT * FROM User WHERE User.username=%s''', (username,))
         data = cursor.fetchone()
         cursor.close()
-        if data != None:
+        if data != None and check_password_hash(data[2], password):
             session['user_id'] = data[0]
             if data[8]: # Checks if the user is an admin
                 return redirect(url_for('admin'))
@@ -210,7 +208,7 @@ def register_user():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        hashed_password = generate_password_hash(password, method="pbkdf2:sha1")
+        hashed_password = generate_password_hash(password)
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         email = request.form['email']

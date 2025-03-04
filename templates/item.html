@@ -21,14 +21,6 @@
 
     <p>Rating: {{ average_rating }}</p>
 
-    
-    <form method="POST" action="{{ url_for('leave_comment', id=id) }}">    
-        <label for="new_comment">Leave Comment</label>
-        <input type="text" id="new_comment" name="new_comment" reqiured><br><br>
-
-        <button type="submit">Leave Comment</button>
-    </form>
-
     <form method="POST" action="{{ url_for('leave_rating', id=id) }}">  
         <p>
             <input type="radio" id="rating1" name="rating" value="1" checked />
@@ -48,6 +40,13 @@
         </p>  
 
         <button type="submit">Leave Rating</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('leave_comment', id=id) }}">    
+        <label for="new_comment">Leave Comment</label>
+        <input type="text" id="new_comment" name="new_comment" reqiured><br><br>
+
+        <button type="submit">Leave Comment</button>
     </form>
 
     {% for comment in comments %}

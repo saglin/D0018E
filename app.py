@@ -170,7 +170,7 @@ def place_order():
                 if stock < item_amount:
                     cursor.close()
                     return redirect(url_for('shopping_cart'))
-                cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, item_amount, item_id, ))
+                cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock - item_amount, item_id, ))
             cursor.execute('''DELETE FROM Shopping_Cart WHERE Shopping_Cart.user_id=%s''', (user_id, ))
             mysql.connection.commit()
         cursor.close()

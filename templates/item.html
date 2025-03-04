@@ -21,10 +21,13 @@
 
     <p>Rating: {{ average_rating }}</p>
 
-    {% for comment in comments %}
-        <p>{{ comment[0] }} {{ comment[1] }}</p>
-        <p>{{ comment[2] }}</p>
-    {% endfor %}
+    
+    <form method="POST" action="{{ url_for('leave_comment', id=id) }}">    
+        <label for="new_comment">Leave Comment</label>
+        <input type="text" id="new_comment" name="new_comment" reqiured><br><br>
+
+        <button type="submit">Leave Comment</button>
+    </form>
 
     <form method="POST" action="{{ url_for('leave_rating', id=id) }}">  
         <p>
@@ -47,12 +50,11 @@
         <button type="submit">Leave Rating</button>
     </form>
 
-    <form method="POST" action="{{ url_for('leave_comment', id=id) }}">    
-        <label for="new_comment">Leave Comment</label>
-        <input type="text" id="new_comment" name="new_comment" reqiured><br><br>
+    {% for comment in comments %}
+    <p>{{ comment[0] }} {{ comment[1] }}</p>
+    <p>{{ comment[2] }}</p>
+    {% endfor %}
 
-        <button type="submit">Leave Comment</button>
-    </form>
 
 </body>
 </html>

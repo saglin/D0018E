@@ -11,13 +11,16 @@
     </header>
 
 	<h1>{{item}}</h1>
-	<p>Stock: {{stock}}</p>
-    <p>Price: {{price}}</p>
-    <p>Item Description: {{description}}</p>
+    <div class="item_info">
+        <p class="price_tag">Price: {{price}}:-</p>
+        <p>Item Description: {{description}}</p>
+        <p>Stock: {{stock}}</p>
+        <form method="POST" action="{{ url_for('add_to_cart', id=id) }}">        
+            <button type="submit" class="add_to_cart_button">Add to cart</button>
+        </form>
+    </div>
 
-    <form method="POST" action="{{ url_for('add_to_cart', id=id) }}">        
-        <button type="submit">Add to cart</button>
-    </form>
+    
 
     <p>Rating: {{ average_rating }}</p>
 

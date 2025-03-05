@@ -117,6 +117,11 @@ input[type="text"] {
     margin-bottom: 10px;
 }
 
+.enter_item_description {
+    width:80%;
+    height:100px;
+}
+
 button {
     background-color: #007bff;
     color: white;

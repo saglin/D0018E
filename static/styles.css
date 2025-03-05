@@ -112,18 +112,16 @@ label {
 }
 
 input[type="text"] {
+    width: 100px;
+    padding: 6px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     margin-bottom: 10px;
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
 }
 
 .enter_item_description {
-    width:400px;
-    height:100px;
+    width: 80%;
+    box-sizing: border-box;
 }
 
 button {

@@ -95,7 +95,7 @@ def add_new_item():
         item_name = request.form['item_name']
         price = request.form['price']
         stock = request.form['stock']
-        if price >= 0 and stock >= 0:
+        if int(price) >= 0 and int(stock) >= 0:
             item_description = request.form['item_description']
             item_image = request.form['item_image']
             cursor = mysql.connection.cursor()
@@ -110,7 +110,7 @@ def add_new_item():
 def change_stock(id):
     if request.method == 'POST':
         stock = request.form['stock']
-        if stock >= 0:
+        if int(stock) >= 0:
             cursor = mysql.connection.cursor()
             cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, id,))
             mysql.connection.commit()

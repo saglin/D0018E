@@ -95,24 +95,26 @@ def add_new_item():
         item_name = request.form['item_name']
         price = request.form['price']
         stock = request.form['stock']
-        item_description = request.form['item_description']
-        item_image = request.form['item_image']
-        cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM Item''')
-        id = len(cursor.fetchall()) + 1
-        cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
-        mysql.connection.commit()
-        cursor.close()
+        if price >= 0 and stock >= 0:
+            item_description = request.form['item_description']
+            item_image = request.form['item_image']
+            cursor = mysql.connection.cursor()
+            cursor.execute('''SELECT * FROM Item''')
+            id = len(cursor.fetchall()) + 1
+            cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
+            mysql.connection.commit()
+            cursor.close()
         return redirect(url_for('admin'))
 
 @app.route("/change_stock/<int:id>", methods=['POST'])
 def change_stock(id):
     if request.method == 'POST':
         stock = request.form['stock']
-        cursor = mysql.connection.cursor()
-        cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, id,))
-        mysql.connection.commit()
-        cursor.close()
+        if stock >= 0:
+            cursor = mysql.connection.cursor()
+            cursor.execute('''UPDATE Item SET Item.stock=%s WHERE Item.id=%s''', (stock, id,))
+            mysql.connection.commit()
+            cursor.close()
         return redirect(url_for('admin'))
     
 @app.route("/shopping_cart")

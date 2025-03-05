@@ -31,7 +31,7 @@
                 <td>
                     <form method="POST" action="{{ url_for('change_stock', id=item[0]) }}">
                         <label for="stock">New stock:</label>
-                        <input type="text" id="stock" name="stock" reqiured><br><br>
+                        <input type="number" id="stock" name="stock" reqiured><br><br>
                         
                         <button type="submit">Change stock</button>
                     </form>
@@ -45,10 +45,10 @@
         <input type="text" id="item_name" name="item_name" reqiured><br><br>
 
         <label for="price">Price:</label>
-        <input type="text" id="price" name="price" reqiured><br><br>
+        <input type="number" id="price" name="price" reqiured><br><br>
 
         <label for="stock">Stock:</label>
-        <input type="text" id="stock" name="stock" reqiured><br><br>
+        <input type="number" id="stock" name="stock" reqiured><br><br>
 
         <label for="item_description">Item description:</label>
         <input type="text" id="item_description" name="item_description" reqiured><br><br>

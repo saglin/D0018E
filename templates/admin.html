@@ -68,7 +68,7 @@
             <th>Date Placed</th>
             <th>Sent</th>
             <th>Send Order</th>
-            <th>Remove Order</th>
+            <!-- <th>Remove Order</th> -->
         </tr>
 
         {% for order in orders %}
@@ -82,11 +82,11 @@
                         <button type="submit">Send Order</button>
                     </form>
                 </td>
-                <td>
+                <!-- <td>
                     <form method="POST" action="{{ url_for('remove_order', id=order[0]) }}">
                         <button type="submit">Remove Order</button>
                     </form>
-                </td>
+                </td> -->
             </tr>
         {% endfor %}
     </table>

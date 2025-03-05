@@ -152,15 +152,15 @@ def send_order(id):
         cursor.close()
         return redirect(url_for('admin'))
     
-@app.route("/remove_order/<int:id>", methods=['POST'])
-def remove_order(id):
-    if request.method == 'POST':
-        cursor = mysql.connection.cursor()
-        cursor.execute('''DELETE FROM Orders WHERE Orders.id=%s''', (id, ))
-        cursor.execute('''DELETE FROM Order_Items WHERE Order_Items.order_id=%s''', (id, ))
-        mysql.connection.commit()
-        cursor.close()
-        return redirect(url_for('admin'))
+# @app.route("/remove_order/<int:id>", methods=['POST'])
+# def remove_order(id):
+#     if request.method == 'POST':
+#         cursor = mysql.connection.cursor()
+#         cursor.execute('''DELETE FROM Orders WHERE Orders.id=%s''', (id, ))
+#         cursor.execute('''DELETE FROM Order_Items WHERE Order_Items.order_id=%s''', (id, ))
+#         mysql.connection.commit()
+#         cursor.close()
+#         return redirect(url_for('admin'))
     
 @app.route("/place_order", methods=['POST'])
 def place_order():

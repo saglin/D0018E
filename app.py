@@ -35,7 +35,7 @@ def item_page(id):
     rating_data = cursor.fetchall()
     average_rating = numpy.mean(rating_data)
     cursor.close()
-    return render_template("item.html", id=item_data[0], item=item_data[1], price=item_data[2], stock=item_data[3], description=item_data[4], comments=comment_data, average_rating=average_rating)
+    return render_template("item.html", id=item_data[0], item=item_data[1], price=item_data[2], stock=item_data[3], description=item_data[4], comments=comment_data, average_rating=average_rating, image=item_data[5])
 
 @app.route("/")
 def login():

@@ -173,3 +173,7 @@ button:hover {
     margin: 20px auto;
     text-align: center;
 }
+
+img {
+    width:25%
+}

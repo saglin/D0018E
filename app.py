@@ -99,8 +99,8 @@ def add_new_item():
             item_description = request.form['item_description']
             item_image = request.form['item_image']
             cursor = mysql.connection.cursor()
-            cursor.execute('''SELECT * FROM Item''')
-            id = len(cursor.fetchall()) + 1
+            cursor.execute('''SELECT Item.id FROM Item ORDER BY Item.id''')
+            id = cursor.fetchall()[-1][0] + 1
             cursor.execute('''INSERT INTO Item (id, item_name, price, stock, item_description, item_image) VALUES (%s, %s, %s, %s, %s, %s)''', (id, item_name, price, stock, item_description, item_image,))
             mysql.connection.commit()
             cursor.close()
@@ -170,8 +170,8 @@ def place_order():
         cursor.execute('''SELECT Item.id, Item.price, Shopping_Cart.item_amount FROM Item, Shopping_Cart WHERE Shopping_Cart.user_id=%s AND Item.id=Shopping_Cart.item_id''', (session['user_id'],))
         data = cursor.fetchall()
         if len(data) > 0:
-            cursor.execute('''SELECT * FROM Orders''')
-            order_id = len(cursor.fetchall()) + 1
+            cursor.execute('''SELECT Orders.id FROM Orders ORDER BY Orders.id''')
+            order_id = cursor.fetchall()[-1][0] + 1
             date_placed = str(date.today())
             cursor.execute('''INSERT INTO Orders (id, user_id, date_placed, sent) VALUES (%s, %s, %s, 0)''', (order_id, user_id, date_placed,))
             for i in range(len(data)):
@@ -196,8 +196,8 @@ def leave_comment(id):
         user_id = session['user_id']
         new_comment = request.form['new_comment']
         cursor = mysql.connection.cursor()
-        cursor.execute('''SELECT * FROM Comment''')
-        comment_id = len(cursor.fetchall()) + 1
+        cursor.execute('''SELECT Comment.id FROM Comment ORDER BY Comment.id''')
+        comment_id = cursor.fetchall()[-1][0] + 1
         time_posted = str(date.today())
         cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text) VALUES (%s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment))
         mysql.connection.commit()
@@ -241,8 +241,8 @@ def register_user():
             cursor.close()
             return redirect(url_for('register'))
 
-        cursor.execute('''SELECT * FROM User''')
-        user_id = len(cursor.fetchall()) + 1
+        cursor.execute('''SELECT User.id FROM User ORDER BY User.id''')
+        user_id = cursor.fetchall()[-1][0] + 1
         cursor.execute('''INSERT INTO User (id, username, encrypted_password, firstname, lastname, email, phone_number, adress, is_admin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 0)''', (user_id, username, hashed_password, firstname, lastname, email, phone_number, adress,))
         mysql.connection.commit()
         cursor.close()

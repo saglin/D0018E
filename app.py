@@ -265,14 +265,13 @@ def register_user():
 
 def check_parent_comment(child_id):
     cursor = mysql.connection.cursor()
-    # Kolla om det finns parent
     cursor.execute('''SELECT Comment.parent_id FROM Comment WHERE Comment.id=%s''', (child_id,))
     parent_id = cursor.fetchone()[0]
     if parent_id is not None:
         cursor.execute('''SELECT User.username, Comment.time_posted FROM Comment, User WHERE User.id=Comment.user_id and Comment.id=%s''', (parent_id,))
         data = cursor.fetchone()
         parent_username = data[0]
-        parent_time_posted = data[1]
+        parent_time_posted = str(data[1])
         cursor.close()
         str = "<p>Replying to " + parent_username + " " + parent_time_posted + "</p>\n"
         return str
@@ -285,7 +284,7 @@ def create_comments(comment_data):
     for comment in comment_data:
         str = ""
         str += check_parent_comment(comment[0])
-        str += "<p>" + comment[1] + " " + comment[2] + "</p>\n<p>" + comment[3] + "</p>"
+        str += "<p>" + comment[1] + " " + str(comment[2]) + "</p>\n<p>" + comment[3] + "</p>"
         comments.append(str)
     return comments
 

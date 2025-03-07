@@ -151,7 +151,7 @@ def change_item_amount(item_id):
 def send_order(id):
     if request.method == 'POST':
         cursor = mysql.connection.cursor()
-        cursor.execute('''UPDATE Orders SET Orders.sent=1''')
+        cursor.execute('''UPDATE Orders SET Orders.sent=1 WHERE Orders.id=%s''', (id,))
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('admin'))

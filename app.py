@@ -198,7 +198,7 @@ def place_order():
         return redirect(url_for('shopping_cart'))
     
 @app.route("/leave_comment/<int:id>", methods=['POST'])
-def leave_comment(id, parent_id=None):
+def leave_comment(id, parent_id):
     if request.method == 'POST':
         user_id = session['user_id']
         new_comment = request.form['new_comment']
@@ -210,9 +210,9 @@ def leave_comment(id, parent_id=None):
             comment_id = 1
         time_posted = str(date.today())
         if parent_id is None:
-            cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text) VALUES (%s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment))
+            cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text) VALUES (%s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment,))
         else:
-            cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text, parent_id) VALUES (%s, %s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment, parent_id))
+            cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text, parent_id) VALUES (%s, %s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment, parent_id,))
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('item_page', id=id))
@@ -287,6 +287,7 @@ def create_comments(comment_data):
     for comment in comment_data:
         comment = list(comment)
         comment.append(check_parent_comment(comment[0]))
+        comment[2] = comment[2].strftime("%B %d, %Y")
         comments.append(comment)
     return comments
 

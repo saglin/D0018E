@@ -1,7 +1,7 @@
 CREATE TABLE `User` (
   `id` integer PRIMARY KEY NOT NULL,
   `username` varchar(50) NOT NULL,
-  `encrypted_password` varchar(100) NOT NULL,
+  `encrypted_password` varchar(256) NOT NULL,
   `firstname` varchar(50),
   `lastname` varchar(50),
   `email` varchar(100) UNIQUE,
@@ -46,7 +46,8 @@ CREATE TABLE `Comment` (
   `user_id` integer,
   `time_posted` date,
   `item_id` integer,
-  `comment_text` varchar(1000)
+  `comment_text` varchar(1000),
+  `parent_id` integer DEFAULT NULL
 );
 
 CREATE TABLE `Rating` (
@@ -65,6 +66,8 @@ ALTER TABLE `Orders` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 ALTER TABLE `Order_Items` ADD FOREIGN KEY (`item_id`) REFERENCES `Item` (`id`);
 
 ALTER TABLE `Order_Items` ADD FOREIGN KEY (`order_id`) REFERENCES `Orders` (`id`);
+
+ALTER TABLE `Comment` ADD FOREIGN KEY (`parent_id`) REFERENCES `Comment` (`id`);
 
 ALTER TABLE `Comment` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 

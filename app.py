@@ -276,7 +276,7 @@ def check_parent_comment(child_id):
         parent_username = data[0]
         parent_time_posted = data[1].strftime("%B %d, %Y")
         cursor.close()
-        str = "<p>Replying to " + parent_username + " " + parent_time_posted + "</p>\n"
+        str = "Replying to " + parent_username + " " + parent_time_posted
         return str
     else:
         cursor.close()

@@ -197,8 +197,9 @@ def place_order():
         cursor.close()
         return redirect(url_for('shopping_cart'))
     
-@app.route("/leave_comment/<id>/<parent_id>", methods=['POST'])
-def leave_comment(id, parent_id):
+@app.route("/leave_comment/<int:id>", methods=['POST'])
+@app.route("/leave_comment/<int:id>/<int:parent_id>", methods=['POST'])
+def leave_comment(id, parent_id=None):
     if request.method == 'POST':
         user_id = session['user_id']
         new_comment = request.form['new_comment']

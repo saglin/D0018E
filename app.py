@@ -271,7 +271,7 @@ def check_parent_comment(child_id):
         cursor.execute('''SELECT User.username, Comment.time_posted FROM Comment, User WHERE User.id=Comment.user_id and Comment.id=%s''', (parent_id,))
         data = cursor.fetchone()
         parent_username = data[0]
-        parent_time_posted = data[1].strftime("%B %d, %T")
+        parent_time_posted = data[1].strftime("%B %d, %Y")
         cursor.close()
         str = "<p>Replying to " + parent_username + " " + parent_time_posted + "</p>\n"
         return str
@@ -284,7 +284,7 @@ def create_comments(comment_data):
     for comment in comment_data:
         str = ""
         str += check_parent_comment(comment[0])
-        str += "<p>" + comment[1] + " " + comment[2].strftime("%B %d, %T") + "</p>\n<p>" + comment[3] + "</p>"
+        str += "<p>" + comment[1] + " " + comment[2].strftime("%B %d, %Y") + "</p>\n<p>" + comment[3] + "</p>"
         comments.append(str)
     return comments
 

@@ -56,8 +56,7 @@
 
     {% for comment in comments %}
     <div class="comment">
-        <p>{{ comment[0] }} {{ comment[1] }}</p>
-        <p>{{ comment[2] }}</p>
+        {{ comment }}
     </div>
     {% endfor %}
 

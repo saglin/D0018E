@@ -29,13 +29,14 @@ def item_page(id):
     cursor = mysql.connection.cursor()
     cursor.execute('''SELECT * FROM Item WHERE Item.id=%s''', (id,))
     item_data = cursor.fetchone()
-    cursor.execute('''SELECT User.username, Comment.time_posted, Comment.comment_text FROM Comment, User WHERE Comment.item_id=%s AND User.id=Comment.user_id''', (id,))
+    cursor.execute('''SELECT Comment.id, User.username, Comment.time_posted, Comment.comment_text FROM Comment, User WHERE Comment.item_id=%s AND User.id=Comment.user_id''', (id,))
     comment_data = cursor.fetchall()
+    comments = create_comments(comment_data)
     cursor.execute('''SELECT Rating.star_rating FROM Rating WHERE Rating.item_id=%s''', (id,))
     rating_data = cursor.fetchall()
     average_rating = numpy.mean(rating_data)
     cursor.close()
-    return render_template("item.html", id=item_data[0], item=item_data[1], price=item_data[2], stock=item_data[3], description=item_data[4], comments=comment_data, average_rating=average_rating, image=item_data[5])
+    return render_template("item.html", id=item_data[0], item=item_data[1], price=item_data[2], stock=item_data[3], description=item_data[4], comments=comments, average_rating=average_rating, image=item_data[5])
 
 @app.route("/")
 def login():
@@ -261,6 +262,33 @@ def register_user():
 
         session['user_id'] = user_id
         return redirect(url_for('index'))
+
+def check_parent_comment(child_id):
+    cursor = mysql.connection.cursor()
+    # Kolla om det finns parent
+    cursor.execute('''SELECT Comment.parent_id FROM Comment WHERE Comment.id=%s''', (child_id,))
+    parent_id = cursor.fetchone()[0]
+    if parent_id is not None:
+        cursor.execute('''SELECT User.username, Comment.time_posted FROM Comment, User WHERE User.id=Comment.user_id and Comment.id=%s''', (parent_id,))
+        data = cursor.fetchone()
+        parent_username = data[0]
+        parent_time_posted = data[1]
+        cursor.close()
+        str = "<p>Replying to " + parent_username + " " + parent_time_posted + "</p>\n"
+        return str
+    else:
+        cursor.close()
+        return ""
+    
+def create_comments(comment_data):
+    comments = []
+    for comment in comment_data:
+        str = ""
+        str += check_parent_comment(comment[0])
+        str += "<p>" + comment[1] + " " + comment[2] + "</p>\n<p>" + comment[3] + "</p>"
+        comments.append(str)
+    return comments
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)

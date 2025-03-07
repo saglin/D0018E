@@ -56,7 +56,16 @@
 
     {% for comment in comments %}
     <div class="comment">
-        {{ comment | safe }}
+        {{ comment[4] | safe }}
+        <p>{{ comment[1] }} {{ comment[2] }}</p>
+        <p>{{ comment[3] }}</p>
+
+        <form method="POST" action="{{ url_for('leave_comment', id=id, parent_id=comment[0]) }}">
+            <label for="new_comment">Leave Comment</label>
+            <input type="text" id="new_comment" name="new_comment" reqiured><br><br>
+
+            <button type="submit">Leave Comment</button>
+        </form>
     </div>
     {% endfor %}
 

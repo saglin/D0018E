@@ -198,7 +198,7 @@ def place_order():
         return redirect(url_for('shopping_cart'))
     
 @app.route("/leave_comment/<int:id>", methods=['POST'])
-def leave_comment(id):
+def leave_comment(id, parent_id=None):
     if request.method == 'POST':
         user_id = session['user_id']
         new_comment = request.form['new_comment']
@@ -209,7 +209,10 @@ def leave_comment(id):
         except:
             comment_id = 1
         time_posted = str(date.today())
-        cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text) VALUES (%s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment))
+        if parent_id is None:
+            cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text) VALUES (%s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment))
+        else:
+            cursor.execute('''INSERT INTO Comment (id, user_id, time_posted, item_id, comment_text, parent_id) VALUES (%s, %s, %s, %s, %s, %s)''', (comment_id, user_id, time_posted, id, new_comment, parent_id))
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('item_page', id=id))
@@ -282,10 +285,7 @@ def check_parent_comment(child_id):
 def create_comments(comment_data):
     comments = []
     for comment in comment_data:
-        str = ""
-        str += check_parent_comment(comment[0])
-        str += "<p>" + comment[1] + " " + comment[2].strftime("%B %d, %Y") + "</p>\n<p>" + comment[3] + "</p>"
-        comments.append(str)
+        comment.append(check_parent_comment(comment[0]))
     return comments
 
 

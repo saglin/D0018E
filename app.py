@@ -283,9 +283,11 @@ def check_parent_comment(child_id):
         return ""
     
 def create_comments(comment_data):
-    comments = list(comment_data)
-    for comment in comments:
+    comments = []
+    for comment in comment_data:
+        comment = list(comment)
         comment.append(check_parent_comment(comment[0]))
+        comments.append(comment)
     return comments
 
 
